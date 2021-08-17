@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>new_temp</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="javascript" href="assets/js/jquery.min.js">
+    <link rel="javascript" href="assets/js/jquery.min.js"> 
+    <link rel="javascript" href="assets/bootstrap/js/bootstrap.min.js">
+</head>
+
+<body>
+    <header id="header">
+        <p class="text-center h1" style="color: rgb(220,220,220);">FAST STYLE TRANSFER</p>
+    </header>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="content">
+                <div>
+                    <label class="text-center file-upload" style="color: rgb(255,255,255);width: 96px;">
+                        UPLOAD
+                        <input type="file" id = "img-input" class="file-upload">
+                    </label>
+                    </div>
+                <div class="con_img"><img id="prev" style="max-width: 100%;max-height: 100%;"
+                        src=""/></div>
+                <div style="display: flex;justify-content: center;padding-top: 25px;"><button
+                        class="btn btn-primary main" type="button" id='stylize'>Button</button></div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="content">
+                <div class="btn-group" role="group"><button class="btn btn-outline-primary"
+                        type="button">STYLE1</button><button class="btn btn-outline-primary"
+                        type="button">STYLE2</button></div>
+                <div></div>
+                <div class="con_img" style="margin-top: 4.3%;"><img id='output' style="max-width: 100%;max-height: 100%;"></div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        let base64Image;
+        $("#img-input").change(function() {
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                let dataURL = reader.result;
+                $('#prev').attr("src", dataURL);
+                base64Image = dataURL.replace("data:image/jpeg;base64,", "");
+            }
+            reader.readAsDataURL($("#img-input")[0].files[0]);
+        });
+
+
+        $("#stylize").click(function () {
+            let message = {
+                image: base64Image
+            }
+            console.log(message);
+            $.post("http://da412c1950e5.in.ngrok.io/main", JSON.stringify(message), function (response) {
+                $('#output').attr("src", response.response);
+                console.log(response.response)
+            });
+        });
+    </script>
+</body>
+
+</html>
